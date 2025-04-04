@@ -1,72 +1,35 @@
-/* SPDX-FileCopyrightText: 2014-present Kriasoft */
-/* SPDX-License-Identifier: MIT */
+import React from "react";
+import clsx from "clsx";
 
-import { DarkModeRounded, LightModeRounded } from "@mui/icons-material";
-import {
-  Dropdown,
-  IconButton,
-  IconButtonProps,
-  ListItemContent,
-  ListItemDecorator,
-  Menu,
-  MenuButton,
-  MenuItem,
-  useColorScheme,
-} from "@mui/joy";
-import { memo } from "react";
-
-export function ColorSchemeButton(props: ColorSchemeButtonProps): JSX.Element {
-  const { mode, systemMode } = useColorScheme();
-
-  return (
-    <Dropdown>
-      <MenuButton slots={{ root: IconButton }} slotProps={{ root: props }}>
-        {mode === "light" || (mode === "system" && systemMode === "light") ? (
-          <DarkModeRounded />
-        ) : (
-          <LightModeRounded />
-        )}
-      </MenuButton>
-
-      <Menu size="sm">
-        <ModeMenuItem mode="light" />
-        <ModeMenuItem mode="dark" />
-        <ModeMenuItem mode="system" />
-      </Menu>
-    </Dropdown>
-  );
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "primary" | "success" | "danger" | "outline" | "ghost";
+  children: React.ReactNode;
 }
 
-const ModeMenuItem = memo(function ModeMenuItem({
-  mode,
-}: ModeMenuItemProps): JSX.Element {
-  const scheme = useColorScheme();
+const baseStyles = "px-4 py-2 rounded-md font-semibold focus:outline-none transition duration-200";
 
+const variantStyles: Record<NonNullable<ButtonProps["variant"]>, string> = {
+  primary: "bg-blue-600 text-white hover:bg-blue-700",
+  success: "bg-green-600 text-white hover:bg-green-700",
+  danger: "bg-red-600 text-white hover:bg-red-700",
+  outline: "border border-gray-400 text-gray-700 hover:bg-gray-100",
+  ghost: "text-gray-600 hover:underline",
+};
+
+const ButtonColorScheme: React.FC<ButtonProps> = ({
+  variant = "primary",
+  children,
+  className,
+  ...props
+}) => {
   return (
-    <MenuItem
-      onClick={() => {
-        scheme.setMode(mode);
-      }}
-      selected={scheme.mode === mode}
+    <button
+      className={clsx(baseStyles, variantStyles[variant], className)}
+      {...props}
     >
-      <ListItemDecorator sx={{ ml: 0.5 }}>
-        {mode === "light" ||
-        (mode !== "dark" && scheme.systemMode === "light") ? (
-          <LightModeRounded />
-        ) : (
-          <DarkModeRounded />
-        )}
-      </ListItemDecorator>
-      <ListItemContent sx={{ pr: 2 }}>
-        {mode === "light"
-          ? "Light theme"
-          : mode === "dark"
-            ? "Dark theme"
-            : "Device default"}
-      </ListItemContent>
-    </MenuItem>
+      {children}
+    </button>
   );
-});
+};
 
-type ColorSchemeButtonProps = Omit<IconButtonProps, "children">;
-type ModeMenuItemProps = { mode: "dark" | "light" | "system" };
+export default ButtonColorScheme;

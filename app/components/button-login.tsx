@@ -1,45 +1,25 @@
-/* SPDX-FileCopyrightText: 2014-present Kriasoft */
-/* SPDX-License-Identifier: MIT */
+import React from "react";
+import clsx from "clsx";
 
-import { Button, ButtonProps } from "@mui/joy";
-import { SignInMethod, useSignIn } from "../core/auth";
-import { AnonymousIcon, GoogleIcon } from "../icons";
-
-export function LoginButton(props: LoginButtonProps): JSX.Element {
-  const { signInMethod, ...other } = props;
-  const [signIn, inFlight] = useSignIn(signInMethod);
-
-  const icon =
-    signInMethod === "google.com" ? (
-      <GoogleIcon />
-    ) : signInMethod === "anonymous" ? (
-      <AnonymousIcon />
-    ) : null;
-
-  return (
-    <Button
-      startDecorator={icon}
-      variant="outlined"
-      onClick={signIn}
-      loading={inFlight}
-      children={
-        signInMethod === "google.com"
-          ? "Continue via Google"
-          : signInMethod === "anonymous"
-            ? "Continue as anonymous"
-            : "unknown"
-      }
-      {...other}
-    />
-  );
+interface ButtonLoginProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  loading?: boolean;
+  text?: string;
 }
 
-export type LoginButtonProps = Omit<
-  ButtonProps<
-    "button",
-    {
-      signInMethod: SignInMethod;
-    }
-  >,
-  "children"
->;
+const ButtonLogin: React.FC<ButtonLoginProps> = ({ loading, text = "Login", className, ...props }) => {
+  return (
+    <button
+      className={clsx(
+        "w-full bg-blue-600 text-white py-2 px-4 rounded-md font-medium hover:bg-blue-700 transition",
+        loading && "opacity-50 cursor-not-allowed",
+        className
+      )}
+      disabled={loading}
+      {...props}
+    >
+      {loading ? "Logging in..." : text}
+    </button>
+  );
+};
+
+export default ButtonLogin;

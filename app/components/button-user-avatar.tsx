@@ -1,57 +1,34 @@
-/* SPDX-FileCopyrightText: 2014-present Kriasoft */
-/* SPDX-License-Identifier: MIT */
+import React from "react";
 
-import { LogoutRounded, SettingsRounded } from "@mui/icons-material";
-import {
-  Avatar,
-  Dropdown,
-  IconButton,
-  IconButtonProps,
-  ListItemContent,
-  ListItemDecorator,
-  Menu,
-  MenuButton,
-  MenuItem,
-} from "@mui/joy";
-import { getAuth, signOut } from "firebase/auth";
-import { useCurrentUser } from "../core/auth";
-
-export function UserAvatarButton(props: UserAvatarButtonProps): JSX.Element {
-  const { sx, ...other } = props;
-  const user = useCurrentUser()!;
-
-  return (
-    <Dropdown>
-      <MenuButton
-        slots={{ root: IconButton }}
-        slotProps={{
-          root: {
-            sx: { borderRadius: "50%", p: "2px", ...sx },
-            ...other,
-          },
-        }}
-      >
-        <Avatar sx={{ width: 36, height: 36 }} src={user.photoURL ?? undefined}>
-          {user.displayName}
-        </Avatar>
-      </MenuButton>
-
-      <Menu size="sm">
-        <MenuItem>
-          <ListItemDecorator sx={{ ml: 0.5 }}>
-            <SettingsRounded />
-          </ListItemDecorator>
-          <ListItemContent sx={{ mr: 2 }}>Settings</ListItemContent>
-        </MenuItem>
-        <MenuItem onClick={() => signOut(getAuth())}>
-          <ListItemDecorator sx={{ ml: 0.5 }}>
-            <LogoutRounded />
-          </ListItemDecorator>
-          <ListItemContent sx={{ mr: 2 }}>Logout</ListItemContent>
-        </MenuItem>
-      </Menu>
-    </Dropdown>
-  );
+interface ButtonUserAvatarProps {
+  name?: string;
+  avatarUrl?: string;
+  onClick?: () => void;
 }
 
-export type UserAvatarButtonProps = Omit<IconButtonProps, "children">;
+const getInitials = (name: string) => {
+  const names = name.trim().split(" ");
+  return names.map((n) => n[0]).join("").toUpperCase();
+};
+
+const ButtonUserAvatar: React.FC<ButtonUserAvatarProps> = ({ name = "User", avatarUrl, onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 text-gray-700 font-semibold hover:ring-2 ring-blue-500 transition"
+      title={name}
+    >
+      {avatarUrl ? (
+        <img
+          src={avatarUrl}
+          alt="avatar"
+          className="w-full h-full object-cover rounded-full"
+        />
+      ) : (
+        <span>{getInitials(name)}</span>
+      )}
+    </button>
+  );
+};
+
+export default ButtonUserAvatar;

@@ -1,7 +1,15 @@
-/* SPDX-FileCopyrightText: 2014-present Kriasoft */
-/* SPDX-License-Identifier: MIT */
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
+import "./index.css"; // Tailwind/global styles
 
-export * from "./button-login";
-export * from "./error";
-export * from "./layout";
-export * from "./logo";
+const root = ReactDOM.createRoot(document.getElementById("root")!);
+
+root.render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>
+);

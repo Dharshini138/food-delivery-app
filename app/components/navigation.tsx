@@ -1,64 +1,45 @@
-/* SPDX-FileCopyrightText: 2014-present Kriasoft */
-/* SPDX-License-Identifier: MIT */
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import Logo from "@/components/Logo";
+import ButtonUserAvatar from "@/components/ButtonUserAvatar";
 
-import {
-  AssignmentTurnedInRounded,
-  ChatRounded,
-  Dashboard,
-} from "@mui/icons-material";
-import {
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemContent,
-  ListItemDecorator,
-  ListProps,
-} from "@mui/joy";
-import { ReactNode, memo } from "react";
-import { Link, useMatch } from "react-router-dom";
+const navLinks = [
+  { name: "Home", path: "/" },
+  { name: "Orders", path: "/orders" },
+  { name: "Cart", path: "/cart" },
+];
 
-export const Navigation = memo(function Navigation(
-  props: NavigationProps,
-): JSX.Element {
-  const { sx, ...other } = props;
+const Navigation: React.FC = () => {
+  const location = useLocation();
 
   return (
-    <List
-      sx={{ "--ListItem-radius": "4px", ...sx }}
-      size="sm"
-      role="navigation"
-      {...other}
-    >
-      <NavItem path="/dashboard" label="Dashboard" icon={<Dashboard />} />
-      <NavItem
-        path="/tasks"
-        label="Tasks"
-        icon={<AssignmentTurnedInRounded />}
-      />
-      <NavItem path="/messages" label="Messages" icon={<ChatRounded />} />
-    </List>
-  );
-});
+    <header className="shadow-sm bg-white">
+      <div className="container mx-auto flex items-center justify-between px-4 py-3">
+        <Logo />
 
-function NavItem(props: NavItemProps): JSX.Element {
-  return (
-    <ListItem>
-      <ListItemButton
-        component={Link}
-        selected={!!useMatch(props.path)}
-        to={props.path}
-        aria-current="page"
-      >
-        <ListItemDecorator children={props.icon} />
-        <ListItemContent>{props.label}</ListItemContent>
-      </ListItemButton>
-    </ListItem>
-  );
-}
+        <nav className="flex space-x-6">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.path}
+              className={`text-sm font-medium ${
+                location.pathname === link.path
+                  ? "text-orange-600"
+                  : "text-gray-600 hover:text-orange-500"
+              }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+        </nav>
 
-type NavigationProps = Omit<ListProps, "children">;
-type NavItemProps = {
-  path: string;
-  label: string;
-  icon: ReactNode;
+        <div className="flex items-center space-x-4">
+          {/* Replace with real user name & image */}
+          <ButtonUserAvatar name="John Doe" />
+        </div>
+      </div>
+    </header>
+  );
 };
+
+export default Navigation;

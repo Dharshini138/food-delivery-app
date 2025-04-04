@@ -1,36 +1,59 @@
 {
-  "React": {
-    "scope": "javascriptreact,typescriptreact",
-    "prefix": "react",
+  "React Functional Component with Props (TypeScript)": {
+    "prefix": "rfc",
     "body": [
-      "import { ${2:Box}, ${2}Props } from \"@mui/joy\";",
+      "import React from 'react';",
       "",
-      "export function ${1:${TM_FILENAME_BASE/(^|-)(.)/${2:/upcase}/g}}(props: ${1}Props): JSX.Element {",
-      "  const { sx, ...other } = props;",
-      "",
-      "  return (",
-      "    <${2} sx={{ ...sx }} {...other}>$0</${2}>",
-      "  );",
+      "interface ${1:Props} {",
+      "  $2",
       "}",
       "",
-      "export type ${1}Props = Omit<${2}Props, \"children\">;",
-      "",
-    ],
-    "description": "React Component",
-  },
-  "ReactRoute": {
-    "scope": "javascriptreact,typescriptreact",
-    "prefix": "route",
-    "body": [
-      "import { ${2:Box}, ${2}Props } from \"@mui/joy\";",
-      "",
-      "export const Component = function ${1:${TM_FILENAME_BASE/(^|-)(.)/${2:/upcase}/g}}(): JSX.Element {",
+      "const ${3:ComponentName}: React.FC<$1> = ({ $4 }) => {",
       "  return (",
-      "    <${2}>$0</${2}>",
+      "    <div>",
+      "      $0",
+      "    </div>",
       "  );",
-      "}",
+      "};",
       "",
+      "export default $3;"
     ],
-    "description": "React Route Component",
+    "description": "React Functional Component with TypeScript props"
   },
-}
+
+  "useState Hook": {
+    "prefix": "us",
+    "body": [
+      "const [${1:state}, set${2:State}] = useState<${3:type}>(${4:initial});"
+    ],
+    "description": "useState hook with TypeScript"
+  },
+
+  "useEffect Hook": {
+    "prefix": "ue",
+    "body": [
+      "useEffect(() => {",
+      "  $1",
+      "}, [${2:dependencies}]);"
+    ],
+    "description": "useEffect hook"
+  },
+
+  "React Router Link": {
+    "prefix": "link",
+    "body": [
+      "<Link to=\"${1:/path}\" className=\"${2:text-orange-600 hover:underline}\">",
+      "  ${3:LinkText}",
+      "</Link>"
+    ],
+    "description": "React Router Link with Tailwind"
+  },
+
+  "Tailwind Button": {
+    "prefix": "btn",
+    "body": [
+      "<button className=\"px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-500\">",
+      "  ${1:ButtonText}",
+      "</button>"
+    ],
+    "description": "Button with Tail
